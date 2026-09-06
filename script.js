@@ -174,3 +174,18 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 console.log(
     "Maryam Fitness Coach Website - Ready 💪"
 );
+document.addEventListener("contextmenu", function (event) {
+
+    if (event.target.tagName === "IMG") {
+        event.preventDefault();
+    }
+
+});
+
+document.addEventListener("dragstart", function (event) {
+
+    if (event.target.tagName === "IMG") {
+        event.preventDefault();
+    }
+
+});
