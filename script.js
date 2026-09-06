@@ -1,34 +1,49 @@
 /* =====================================================
-   MARYAM FITNESS - JAVASCRIPT
+   MARYAM FITNESS COACH
    ===================================================== */
 
 
 /* ================= MOBILE MENU ================= */
 
-const menuBtn = document.getElementById("menuBtn");
-const navLinks = document.querySelector(".nav-links");
+const menuButton = document.getElementById("menuButton");
+const navMenu = document.getElementById("navMenu");
 
-menuBtn.addEventListener("click", () => {
-    navLinks.classList.toggle("active");
+menuButton.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
 });
 
 
-/* بستن منو بعد از کلیک روی لینک */
+/* Close menu after clicking a link */
 
-document.querySelectorAll(".nav-links a").forEach(link => {
+document.querySelectorAll(".nav-menu a").forEach(link => {
 
     link.addEventListener("click", () => {
-        navLinks.classList.remove("active");
+        navMenu.classList.remove("active");
     });
+
+});
+
+
+/* ================= HEADER ================= */
+
+const header = document.getElementById("header");
+
+window.addEventListener("scroll", () => {
+
+    if (window.scrollY > 40) {
+        header.classList.add("scrolled");
+    } else {
+        header.classList.remove("scrolled");
+    }
 
 });
 
 
 /* ================= COUNTERS ================= */
 
-const counters = document.querySelectorAll(".stat strong");
+const counters = document.querySelectorAll(".result strong");
 
-const observer = new IntersectionObserver((entries) => {
+const counterObserver = new IntersectionObserver((entries) => {
 
     entries.forEach(entry => {
 
@@ -39,11 +54,11 @@ const observer = new IntersectionObserver((entries) => {
 
         let current = 0;
 
-        const duration = 1200;
-        const stepTime = 20;
-        const increment = target / (duration / stepTime);
+        const duration = 1400;
+        const interval = 20;
+        const increment = target / (duration / interval);
 
-        const updateCounter = () => {
+        const update = () => {
 
             current += increment;
 
@@ -51,76 +66,111 @@ const observer = new IntersectionObserver((entries) => {
 
                 counter.textContent = Math.floor(current);
 
-                setTimeout(updateCounter, stepTime);
+                setTimeout(update, interval);
 
             } else {
 
-                counter.textContent = target + (target === 95 ? "%" : "+");
+                counter.textContent = target;
+
+                if (target === 8) {
+                    counter.textContent = "8+";
+                }
+
+                if (target === 300) {
+                    counter.textContent = "300+";
+                }
+
+                if (target === 95) {
+                    counter.textContent = "95%";
+                }
+
+                if (target === 100) {
+                    counter.textContent = "100%";
+                }
 
             }
 
         };
 
-        updateCounter();
+        update();
 
-        observer.unobserve(counter);
+        counterObserver.unobserve(counter);
 
     });
 
 }, {
-    threshold: .5
+    threshold: 0.5
 });
 
 
-counters.forEach(counter => observer.observe(counter));
-
-
-/* ================= NAVBAR SCROLL ================= */
-
-const navbar = document.querySelector(".navbar");
-
-window.addEventListener("scroll", () => {
-
-    if (window.scrollY > 50) {
-        navbar.style.background = "rgba(5,5,5,.96)";
-    } else {
-        navbar.style.background = "rgba(9,9,9,.88)";
-    }
-
+counters.forEach(counter => {
+    counterObserver.observe(counter);
 });
 
 
-/* ================= REVEAL ANIMATION ================= */
+/* ================= SCROLL REVEAL ================= */
 
 const revealElements = document.querySelectorAll(
-    ".service-card, .result-card, .about-content, .about-image"
+    ".service, .why-item, .step, .result, .about-content, .about-image"
 );
 
 const revealObserver = new IntersectionObserver((entries) => {
 
     entries.forEach(entry => {
 
-        if (entry.isIntersecting) {
+        if (!entry.isIntersecting) return;
 
-            entry.target.style.opacity = "1";
-            entry.target.style.transform = "translateY(0)";
+        entry.target.classList.add("show");
 
-            revealObserver.unobserve(entry.target);
-        }
+        revealObserver.unobserve(entry.target);
 
     });
 
 }, {
-    threshold: .15
+    threshold: 0.12
 });
 
 
 revealElements.forEach(element => {
 
     element.style.opacity = "0";
-    element.style.transform = "translateY(30px)";
-    element.style.transition = "opacity .7s ease, transform .7s ease";
+    element.style.transform = "translateY(25px)";
+    element.style.transition =
+        "opacity .7s ease, transform .7s ease";
 
     revealObserver.observe(element);
 
 });
+
+
+/* ================= SMOOTH CTA ================= */
+
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+
+    link.addEventListener("click", function (event) {
+
+        const targetId = this.getAttribute("href");
+
+        if (targetId === "#") return;
+
+        const target = document.querySelector(targetId);
+
+        if (!target) return;
+
+        event.preventDefault();
+
+        target.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    });
+
+});
+
+
+/* ================= CONSOLE ================= */
+
+console.log(
+    "Maryam Fitness Coach Website - Ready 💪"
+);
